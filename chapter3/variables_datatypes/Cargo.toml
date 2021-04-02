@@ -1,5 +1,5 @@
 [package]
-name = "rust_tutorial"
+name = "variables_datatypes"
 version = "0.1.0"
 authors = ["tatamiya <tamyuji1002@gmail.com>"]
 edition = "2018"

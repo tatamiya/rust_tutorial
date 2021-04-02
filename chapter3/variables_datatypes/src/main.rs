@@ -76,4 +76,11 @@ fn main() {
         "The value of the element at index {} is: {}",
         index, element
     );
+
+    // 3.3 Functions
+    another_function(5);
+}
+
+fn another_function(x: i32) {
+    println!("The value of x is: {}", x);
 }

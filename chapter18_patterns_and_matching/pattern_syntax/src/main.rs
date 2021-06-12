@@ -123,4 +123,72 @@ fn main() {
         }
     }
     println!("setting is {:?}", setting_value);
+
+    // Ignoring an Unused Variable by Starting Its Name with _
+    let s = Some(String::from("Hello!"));
+    if let Some(_) = s {
+        // not work when _ => _s
+        println!("found a string");
+    }
+    println!("{:?}", s);
+
+    // Ignoring Remaining Parts of Value with ..
+    struct Point3 {
+        x: i32,
+        y: i32,
+        z: i32,
+    }
+    let origin = Point3 { x: 0, y: 0, z: 0 };
+    match origin {
+        Point3 { x, .. } => println!("x is {}", x),
+    }
+
+    let numbers = (2, 4, 8, 16, 32);
+    match numbers {
+        (first, .., last) => {
+            println!("Some numbers: {}, {}", first, last);
+        }
+    }
+
+    // Extra Conditionals with Match Guards
+    let num = Some(4);
+    match num {
+        Some(x) if x < 5 => println!("less than five: {}", x),
+        Some(x) => println!("{}", x),
+        None => (),
+    }
+
+    let x = Some(5);
+    let y = 10;
+    match x {
+        Some(50) => println!("Got 50"),
+        Some(n) if n == y => println!("Matched, n = {}", n),
+        _ => println!("Default case, x = {:?}", x),
+    }
+    println!("at the end: x = {:?}, y = {}", x, y);
+
+    let x = 4;
+    let y = false;
+    match x {
+        // if x is 4 or 5 or 6 and if y is true
+        // interpreted as (4 | 5 | 6) if y
+        4 | 5 | 6 if y => println!("yes"),
+        _ => println!("no"),
+    }
+
+    // @ Bindings
+    enum Message3 {
+        Hello { id: i32 },
+    }
+    let msg = Message3::Hello { id: 5 };
+    match msg {
+        Message3::Hello {
+            // @ let us test a value and save it in a variable at the same time.
+            id: id_variable @ 3..=7,
+        } => println!("Found an id in range: {}", id_variable),
+        Message3::Hello { id: 10..=12 } => {
+            println!("Found an id in another range")
+        }
+        Message3::Hello { id } => println!("FOund some other id: {}", id),
+    }
 }

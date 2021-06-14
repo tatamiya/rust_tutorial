@@ -1,5 +1,8 @@
 use std::slice;
 
+static HELLO_WORLD: &str = "Hello, world!";
+static mut COUNTER: u32 = 0;
+
 fn main() {
     // Dereferencing a Raw Pointer
     let mut num = 5;
@@ -31,4 +34,25 @@ fn main() {
     let (a, b) = r.split_at_mut(3);
     assert_eq!(a, &mut [1, 2, 3]);
     assert_eq!(b, &mut [4, 5, 6]);
+
+    // Using extern Functions to Call External Code
+    extern "C" {
+        fn abs(input: i32) -> i32;
+    }
+    unsafe {
+        println!("Absolute value of -3 according to C: {}", abs(-3));
+    }
+
+    // Accessing or Modifying a Mutable Static Variable
+    println!("name is: {}", HELLO_WORLD);
+    fn add_to_count(inc: u32) {
+        unsafe {
+            COUNTER += inc;
+        }
+    }
+    add_to_count(3);
+    unsafe {
+        println!("COUNTER: {}", COUNTER);
+    }
+
 }

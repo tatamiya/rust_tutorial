@@ -1,3 +1,4 @@
+use std::fmt;
 use std::ops::Add;
 
 #[derive(Debug, PartialEq)]
@@ -85,4 +86,35 @@ fn main() {
 
     // println!("A baby dog is called a {}", Animal::baby_name());
     println!("A baby dog is called a {}", <Dog as Animal>::baby_name()); // "puppy"
+
+    // Using Supertraits to Require One Trait’s Functionality Within Another Trait
+    trait OutlinePrint: fmt::Display {
+        fn outline_print(&self) {
+            let output = self.to_string();
+            let len = output.len();
+            println!("{}", "*".repeat(len + 4));
+            println!("*{}*", " ".repeat(len + 2));
+            println!("* {} *", output);
+            println!("*{}*", " ".repeat(len + 2));
+            println!("{}", "*".repeat(len + 4));
+        }
+    }
+    impl fmt::Display for Point {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "({}, {})", self.x, self.y)
+        }
+    }
+    impl OutlinePrint for Point {}
+    let p = Point { x: 1, y: 2 };
+    p.outline_print();
+
+    // Using the Newtype Pattern to Implement External Traits on External Types
+    struct Wrapper(Vec<String>);
+    impl fmt::Display for Wrapper {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "[{}]", self.0.join(", "))
+        }
+    }
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+    println!("w = {}", w);
 }
